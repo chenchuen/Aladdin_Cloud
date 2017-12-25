@@ -1,0 +1,16 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": true,
+    "Duplicates": {
+      ".read": true,
+      "$userType": {
+        ".read": true,
+        "$phone_num": {
+          ".write": true,
+          ".validate": "!data.exists()"
+        }
+      }
+    }
+  }
+}
