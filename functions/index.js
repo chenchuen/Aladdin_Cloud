@@ -37,14 +37,14 @@ exports.confirmPayment = functions.https.onRequest((req, resp) => {
       refToPayment.update({
         paid:paymentInfo.Amount,
         updatedDate:dateNow,
-        status:'Paid',
+        status:'Confirm',
         trxCode:paymentInfo.TxnStatus,
         AuthCode:paymentInfo.AuthCode,
         BankRefNo:paymentInfo.BankRefNo,
         TxnID:paymentInfo.TxnID
       });
       refToTransaction.update({
-        status:'Paid',
+        status:'Confirm',
         PaymentID:paymentInfo.PaymentID,
         trxCode:paymentInfo.TxnStatus,
       });
