@@ -6,7 +6,8 @@ const services = require('./services');
 
 exports.getFullParameters = functions.https.onRequest((req, resp) => {
   const config = services.getConfig();
-  //TODO:verify the request whether got missing parameters
+  //TODO: verify the request whether got missing parameters
+  //TODO: verify sender identity make sure not fake request from third party
   let paymentInfo = req.body.paymentInfoWithID;
   paymentInfo.ServiceID = config.ServiceID;
   paymentInfo.MerchantReturnURL = config.MerchantReturnURL;
@@ -37,14 +38,14 @@ exports.confirmPayment = functions.https.onRequest((req, resp) => {
       refToPayment.update({
         paid:paymentInfo.Amount,
         updatedDate:dateNow,
-        status:'Confirm',
+        status:'Confirmed',
         trxCode:paymentInfo.TxnStatus,
         AuthCode:paymentInfo.AuthCode,
         BankRefNo:paymentInfo.BankRefNo,
         TxnID:paymentInfo.TxnID
       });
       refToTransaction.update({
-        status:'Confirm',
+        status:'Confirmed',
         PaymentID:paymentInfo.PaymentID,
         trxCode:paymentInfo.TxnStatus,
       });
