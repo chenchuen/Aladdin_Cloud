@@ -1,6 +1,10 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-admin.initializeApp(functions.config().firebase);
+const serviceAccount = require('./aladdinapp-942fe-firebase-adminsdk-j60zx-0a9586c82e.json');
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://aladdinapp-942fe.firebaseio.com'
+});
 const sha256 = require('sha256');
 const services = require('./services');
 
@@ -83,4 +87,25 @@ exports.confirmPayment = functions.https.onRequest((req, resp) => {
   }
 
  resp.send('Success');
+});
+
+exports.sendPushNotification = functions.https.onRequest((req, resp) => {
+
+    console.log(req.body);
+    var message = {
+        notification: { 
+            title: "Notification",
+            body: JSON.stringify(req.body)
+        },
+    };
+    admin.messaging().sendToDevice(req.body.FCMtoken, message)
+        .then(function (response) {
+            console.log("Successfully sent message:", response);
+            return;
+        })
+        .catch(function (error) {
+            console.log("Error sending message:", error);
+            return;
+        });
+    resp.send('Success');
 });
