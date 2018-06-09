@@ -1,0 +1,14 @@
+{
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "rimraf": "^2.6.2"
+  },
+  "name": "Aladdin_Cloud",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/chenchuen/Aladdin_Cloud.git",
+  "author": "chenchuen <kevinleechenchuen@gmail.com>",
+  "license": "MIT",
+  "package-functions": "babel 'functionsES6' --out-dir 'functions' --presets=es2015 --copy-files --ignore 'node_modules'"
+}

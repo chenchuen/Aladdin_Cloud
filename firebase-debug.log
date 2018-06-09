@@ -1,0 +1,41 @@
+[debug] [2018-05-11T05:43:06.579Z] ----------------------------------------------------------------------
+[debug] [2018-05-11T05:43:06.582Z] Command:       /usr/local/bin/node /usr/local/bin/firebase serve --only functions
+[debug] [2018-05-11T05:43:06.582Z] CLI Version:   3.16.0
+[debug] [2018-05-11T05:43:06.583Z] Platform:      darwin
+[debug] [2018-05-11T05:43:06.583Z] Node Version:  v8.6.0
+[debug] [2018-05-11T05:43:06.583Z] Time:          Fri May 11 2018 13:43:06 GMT+0800 (+08)
+[debug] [2018-05-11T05:43:06.583Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-05-11T05:43:06.605Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-05-11T05:43:06.605Z] > authorizing via signed-in user
+[debug] [2018-05-11T05:43:06.608Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-05-11T05:43:06.609Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ { refresh_token: '1/M-nl30FFB_lmn9EvJQK3aX3gsaX8BZwbnbL-2jqNumA',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Fri May 11 2018 13:43:06 GMT+0800 (+08)
+[debug] [2018-05-11T05:43:06.796Z] <<< HTTP RESPONSE 200
+[debug] [2018-05-11T05:43:06.805Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/aladdinapp-942fe  
+  
+ Fri May 11 2018 13:43:06 GMT+0800 (+08)
+[debug] [2018-05-11T05:43:08.035Z] <<< HTTP RESPONSE 200
+[debug] [2018-05-11T05:43:08.036Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/aladdinapp-942fe/tokens  
+  
+ Fri May 11 2018 13:43:08 GMT+0800 (+08)
+[debug] [2018-05-11T05:43:08.977Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/lee/Documents/Aladdin/Aladdin_Cloud'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2018-05-11T05:43:10.046Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/aladdinapp-942fe  
+  
+ Fri May 11 2018 13:43:10 GMT+0800 (+08)
+[debug] [2018-05-11T05:43:10.047Z] >>> HTTP REQUEST GET https://apikeys.googleapis.com/v1/projects/aladdinapp-942fe/apiKeys  
+  
+ Fri May 11 2018 13:43:10 GMT+0800 (+08)
+[debug] [2018-05-11T05:43:11.435Z] <<< HTTP RESPONSE 200
+[debug] [2018-05-11T05:43:11.530Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: confirmPayment: http://localhost:5000/aladdinapp-942fe/us-central1/confirmPayment
+[info] ✔  functions: getFullParameters: http://localhost:5000/aladdinapp-942fe/us-central1/getFullParameters

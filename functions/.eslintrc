@@ -1,0 +1,16 @@
+{
+  "extends": "rallycoding",
+  "globals": {
+    "fetch": false
+  },
+  "rules": {
+    "arrow-body-style": 0,
+    "no-underscore-dangle": 0,
+    "quotes": 0,
+    "max-len": 0,
+    "global-require": 0,
+    "array-callback-return": 0,
+    "no-mixed-operators": 0,
+    "no-return-assign": 0,
+    }
+}

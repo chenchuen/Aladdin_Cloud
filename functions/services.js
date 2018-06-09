@@ -11,13 +11,30 @@ exports.getConfig = function() {
     MerchantCallBackURL: 'https://us-central1-aladdinapp-942fe.cloudfunctions.net/confirmPayment', //display or change status
     MerchantUnApprovalURL: 'https://us-central1-aladdinapp-942fe.cloudfunctions.net/confirmPayment',
     PageTimeout: 500,
+    Methods: {
+      CREATE_TRANSACTION: 'CREATE_TRANSACTION',
+      UPDATE_TRANSACTION: 'UPDATE_TRANSACTION',
+      REVIEW: 'REVIEW',
+      PAYMENT_SUCCESS: 'PAYMENT_SUCCESS',
+      PAYMENT_FAILED: 'PAYMENT_FAILED'
+    },
+    firebaseCredential: {
+      apiKey: "AIzaSyCoeUXmwEIwUdkF4BWZKLVaSGRcrQPLkvg",
+      authDomain: "aladdinapp-942fe.firebaseapp.com",
+      databaseURL: "https://aladdinapp-942fe.firebaseio.com",
+      projectId: "aladdinapp-942fe",
+      storageBucket: "aladdinapp-942fe.appspot.com",
+      messagingSenderId: "617243251381"
+    }
   };
 }
+
 
 exports.validateRequest = function(paymentInfo, MerchantPassword) {
   const toHash = MerchantPassword + paymentInfo.TxnID + paymentInfo.ServiceID
             + paymentInfo.PaymentID + paymentInfo.TxnStatus + paymentInfo.Amount
             + paymentInfo.CurrencyCode + paymentInfo.AuthCode + paymentInfo.OrderNumber
+            + paymentInfo.Param6 + paymentInfo.Param7
   const HashValue = sha256(toHash);
   if (HashValue === paymentInfo.HashValue2) {
     return true;
