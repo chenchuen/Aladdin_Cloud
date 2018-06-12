@@ -6,7 +6,7 @@ exports.getConfig = function() {
     ServiceID: 'sit',
     MerchantPassword: 'sit12345',
     MerchantName: 'E-Reno',
-    MerchantReturnURL: 'https://us-central1-aladdinapp-942fe.cloudfunctions.net/confirmPayment',
+    MerchantReturnURL: 'https://us-central1-aladdinapp-942fe.cloudfunctions.net/confirmPayment?uid={uid};trxid={trxid}',
     MerchantApprovalURL: 'https://us-central1-aladdinapp-942fe.cloudfunctions.net/confirmPayment',
     MerchantCallBackURL: 'https://us-central1-aladdinapp-942fe.cloudfunctions.net/confirmPayment', //display or change status
     MerchantUnApprovalURL: 'https://us-central1-aladdinapp-942fe.cloudfunctions.net/confirmPayment',
@@ -15,6 +15,7 @@ exports.getConfig = function() {
       CREATE_TRANSACTION: 'CREATE_TRANSACTION',
       UPDATE_TRANSACTION: 'UPDATE_TRANSACTION',
       REVIEW: 'REVIEW',
+      PAYMENT_PENDING: 'PAYMENT_PENDING',
       PAYMENT_SUCCESS: 'PAYMENT_SUCCESS',
       PAYMENT_FAILED: 'PAYMENT_FAILED'
     },
@@ -27,6 +28,7 @@ exports.getConfig = function() {
       messagingSenderId: "617243251381"
     }
   };
+
 }
 
 

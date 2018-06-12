@@ -15,16 +15,36 @@ exports.getFullParameters = functions.https.onRequest((req, resp) => {
   //TODO: verify sender identity make sure not fake request from third party
   let paymentInfo = req.body.paymentInfoWithID;
   paymentInfo.ServiceID = config.ServiceID;
-  paymentInfo.MerchantReturnURL = config.MerchantReturnURL;
+  paymentInfo.MerchantReturnURL = config.MerchantReturnURL.replace('{uid}', paymentInfo.customerUID)
+                                    .replace('{trxid}', paymentInfo.OrderNumber);
   const toHash = config.MerchantPassword + config.ServiceID + paymentInfo.PaymentID
-        + config.MerchantReturnURL + paymentInfo.Amount + paymentInfo.CurrencyCode
+        + paymentInfo.MerchantReturnURL + paymentInfo.Amount + paymentInfo.CurrencyCode
         + paymentInfo.CustIP;
   const HashValue = sha256(toHash);
   paymentInfo.HashValue = HashValue;
+  console.log(paymentInfo);
   resp.send(paymentInfo);
 });
 
 exports.confirmPayment = functions.https.onRequest((req, resp) => {
+  if(req.query.uid !== undefined ||
+    req.query.trxid !== undefined){
+      try {
+        console.log('In routing section...');
+        console.log(req.query);
+        const uid = req.query.uid;
+        const trxid = req.query.trxid;
+        const PaymentProcessingPayload = setMessage('PAYMENT_PENDING', trxid, 'customer');
+        sendNotification(admin, 'customer', uid, PaymentProcessingPayload);
+        resp.send('Payment processing...');
+        return;
+      } catch (error) {
+        resp.status(500).send('Payment Failed!');
+        return;
+      }
+  }
+  console.log('In updating section...');
+  console.log(req.body);
   const config = services.getConfig();
   const dateNow = admin.database.ServerValue.TIMESTAMP;
   var paymentInfo = req.body;
@@ -52,8 +72,8 @@ exports.confirmPayment = functions.https.onRequest((req, resp) => {
         PaymentID:paymentInfo.PaymentID,
         trxCode:paymentInfo.TxnStatus,
       });
-      const CustomerSuccessPayload = setMessage('PAYMENT_SUCCESS', req.body.Param6, 'customer');
-      const VendorSuccessPayload = setMessage('PAYMENT_SUCCESS', req.body.Param7, 'vendor');
+      const CustomerSuccessPayload = setMessage('PAYMENT_SUCCESS', req.body.OrderNumber, 'customer');
+      const VendorSuccessPayload = setMessage('PAYMENT_SUCCESS', req.body.OrderNumber, 'vendor');
 
       sendNotification(admin, 'customer', req.body.Param6, CustomerSuccessPayload);
       sendNotification(admin, 'vendor', req.body.Param7, VendorSuccessPayload);
@@ -73,7 +93,7 @@ exports.confirmPayment = functions.https.onRequest((req, resp) => {
         trxCode:paymentInfo.TxnStatus,
       });
 
-      const CustomerFailedPayload = setMessage('PAYMENT_FAILED', req.body.Param6, 'customer');
+      const CustomerFailedPayload = setMessage('PAYMENT_FAILED', req.body.OrderNumber, 'customer');
       sendNotification(admin, 'customer', req.body.Param6, CustomerFailedPayload);
       break;
     case '2': //processing
@@ -135,15 +155,24 @@ function setMessage(method, transactionUID, userType) {
     case Method.REVIEW:
       return {
         notification: {
-            title: 'Someone has left you a review!',
+            title: 'Please consider leaving a review',
             body: 'Tap to find out more',
             targetScreen: 'reviews',
             transactionUID: transactionUID
         },
       };
       break;
+    case Method.PAYMENT_PENDING:
+      return {
+        notification: {
+            title: 'Your payment is pending',
+            body: 'Tap to find out more',
+            targetScreen: 'requests',
+            transactionUID: transactionUID
+        },
+      };
+      break;
     case Method.PAYMENT_SUCCESS:
-    console.log(method, transactionUID, userType);
       if (userType === 'customer') {
         return {
           notification: {
@@ -205,7 +234,9 @@ function sendNotification(admin, userType, recipientUID, payload) {
   try {
     getRecipientFCMToken(admin, userType, recipientUID)
     .then(function(fcmToken) {
-      console.log(fcmToken);
+      if (fcmToken === null) {
+        throw new Error('No FCM token detected!')
+      }
       admin.messaging().sendToDevice(fcmToken, payload)
             .then(function (response) {
               console.log("Successfully sent message:", response);
