@@ -1,0 +1,34 @@
+[debug] [2018-05-23T13:54:08.101Z] ----------------------------------------------------------------------
+[debug] [2018-05-23T13:54:08.107Z] Command:       /usr/local/bin/node /usr/local/bin/firebase serve --only functions
+[debug] [2018-05-23T13:54:08.107Z] CLI Version:   3.16.0
+[debug] [2018-05-23T13:54:08.107Z] Platform:      darwin
+[debug] [2018-05-23T13:54:08.107Z] Node Version:  v8.6.0
+[debug] [2018-05-23T13:54:08.108Z] Time:          Wed May 23 2018 21:54:08 GMT+0800 (+08)
+[debug] [2018-05-23T13:54:08.109Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-05-23T13:54:08.131Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-05-23T13:54:08.131Z] > authorizing via signed-in user
+[debug] [2018-05-23T13:54:08.133Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/aladdinapp-942fe  
+  
+ Wed May 23 2018 21:54:08 GMT+0800 (+08)
+[debug] [2018-05-23T13:54:09.137Z] <<< HTTP RESPONSE 200
+[debug] [2018-05-23T13:54:09.138Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/aladdinapp-942fe/tokens  
+  
+ Wed May 23 2018 21:54:09 GMT+0800 (+08)
+[debug] [2018-05-23T13:54:10.148Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/lee/Documents/Aladdin/Aladdin_Cloud'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2018-05-23T13:54:10.924Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/aladdinapp-942fe  
+  
+ Wed May 23 2018 21:54:10 GMT+0800 (+08)
+[debug] [2018-05-23T13:54:10.925Z] >>> HTTP REQUEST GET https://apikeys.googleapis.com/v1/projects/aladdinapp-942fe/apiKeys  
+  
+ Wed May 23 2018 21:54:10 GMT+0800 (+08)
+[debug] [2018-05-23T13:54:18.357Z] <<< HTTP RESPONSE 200
+[debug] [2018-05-23T13:54:18.862Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: login: http://localhost:5000/aladdinapp-942fe/us-central1/login
+[info] ✔  functions: confirmPayment: http://localhost:5000/aladdinapp-942fe/us-central1/confirmPayment
+[info] ✔  functions: sendPushNotification: http://localhost:5000/aladdinapp-942fe/us-central1/sendPushNotification
+[info] ✔  functions: getFullParameters: http://localhost:5000/aladdinapp-942fe/us-central1/getFullParameters
