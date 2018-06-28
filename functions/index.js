@@ -9,6 +9,20 @@ const sha256 = require('sha256');
 const services = require('./services');
 const Method = services.getConfig().Methods;
 
+exports.Auth = functions.https.onRequest((req, resp) => {
+  resp.send(paymentInfo);
+});
+exports.Home = functions.https.onRequest((req, resp) => {
+  resp.send(paymentInfo);
+});
+exports.Request = functions.https.onRequest((req, resp) => {
+  resp.send(paymentInfo);
+});
+exports.Payment = functions.https.onRequest((req, resp) => {
+  resp.send(paymentInfo);
+});
+
+
 exports.getFullParameters = functions.https.onRequest((req, resp) => {
   const config = services.getConfig();
   //TODO: verify the request whether got missing parameters
@@ -131,66 +145,86 @@ exports.sendPushNotification = functions.https.onRequest((req, resp) => {
 });
 
 function setMessage(method, transactionUID, userType) {
+  var timestamp = Date.now();
+  var date = new Date(timestamp);
   switch (method) {
     case Method.CREATE_TRANSACTION:
       return {
-        notification: {
+          notification: {
             title: 'You have a new service request!',
-            body: 'Tap to find out more',
+            body: 'Tap to find out more'
+          },
+          data: {
             targetScreen: 'requests',
-            transactionUID: transactionUID
-        },
+            transactionUID: transactionUID,
+            timestamp: date.toISOString()
+          }
       };
       break;
     case Method.UPDATE_TRANSACTION:
       return {
-        notification: {
+          notification: {
             title: 'Your service request has been updated!',
             body: 'Tap to find out more',
+          },
+          data: {
             targetScreen: 'requests',
-            transactionUID: transactionUID
-        },
+            transactionUID: transactionUID,
+            timestamp: date.toISOString()
+          }
       };
       break;
     case Method.REVIEW:
       return {
-        notification: {
+          notification: {
             title: 'Please consider leaving a review',
             body: 'Tap to find out more',
+          },
+          data: {
             targetScreen: 'reviews',
-            transactionUID: transactionUID
-        },
+            transactionUID: transactionUID,
+            timestamp: date.toISOString()
+          }
       };
       break;
     case Method.PAYMENT_PENDING:
       return {
-        notification: {
+          notification: {
             title: 'Your payment is pending',
             body: 'Tap to find out more',
+          },
+          data: {
             targetScreen: 'requests',
-            transactionUID: transactionUID
-        },
+            transactionUID: transactionUID,
+            timestamp: date.toISOString()
+          }
       };
       break;
     case Method.PAYMENT_SUCCESS:
       if (userType === 'customer') {
         return {
-          notification: {
+            notification: {
               title: 'Payment successfull!',
               body: 'Tap to find out more',
+            },
+            data: {
               pop: 'true',
               targetScreen: 'requests',
-              transactionUID: transactionUID
-          },
+              transactionUID: transactionUID,
+              timestamp: date.toISOString()
+            }
         };
       } else if (userType === 'vendor') {
         return {
-          notification: {
+            notification: {
               title: 'You have received a payment!',
               body: 'Tap to find out more',
+            },
+            data: {
               targetScreen: 'requests',
-              transactionUID: transactionUID
-          },
+              transactionUID: transactionUID,
+              timestamp: date.toISOString()
+            }
         };
       } else {
         throw new Error('Invalid user type!');
@@ -198,12 +232,15 @@ function setMessage(method, transactionUID, userType) {
       break;
       case Method.PAYMENT_FAILED:
         return {
-          notification: {
+            notification: {
               title: 'Your payment has failed',
               body: 'Tap to find out more',
+            },
+            data: {
               targetScreen: 'requests',
-              transactionUID: transactionUID
-          },
+              transactionUID: transactionUID,
+              timestamp: date.toISOString()
+            }
         };
         break;
     default:
