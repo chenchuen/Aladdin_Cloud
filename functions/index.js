@@ -9,30 +9,20 @@ const sha256 = require('sha256');
 const services = require('./services');
 const Method = services.getConfig().Methods;
 
-exports.Auth = functions.https.onRequest((req, resp) => {
-  resp.send(paymentInfo);
-});
-exports.Home = functions.https.onRequest((req, resp) => {
-  resp.send(paymentInfo);
-});
-exports.Request = functions.https.onRequest((req, resp) => {
-  resp.send(paymentInfo);
-});
-exports.Payment = functions.https.onRequest((req, resp) => {
-  resp.send(paymentInfo);
-});
-
-
 exports.getFullParameters = functions.https.onRequest((req, resp) => {
   const config = services.getConfig();
   //TODO: verify the request whether got missing parameters
   //TODO: verify sender identity make sure not fake request from third party
   let paymentInfo = req.body.paymentInfoWithID;
+
   paymentInfo.ServiceID = config.ServiceID;
-  paymentInfo.MerchantReturnURL = config.MerchantReturnURL.replace('{uid}', paymentInfo.customerUID)
+  paymentInfo.MerchantCallBackURL = config.MerchantCallBackURL.replace('{uid}', paymentInfo.customerUID)
                                     .replace('{trxid}', paymentInfo.OrderNumber);
+  paymentInfo.MerchantReturnURL = config.MerchantReturnURL;
   const toHash = config.MerchantPassword + config.ServiceID + paymentInfo.PaymentID
-        + paymentInfo.MerchantReturnURL + paymentInfo.Amount + paymentInfo.CurrencyCode
+        + config.MerchantReturnURL
+        + paymentInfo.MerchantCallBackURL
+        + paymentInfo.Amount + paymentInfo.CurrencyCode
         + paymentInfo.CustIP;
   const HashValue = sha256(toHash);
   paymentInfo.HashValue = HashValue;
@@ -40,7 +30,7 @@ exports.getFullParameters = functions.https.onRequest((req, resp) => {
   resp.send(paymentInfo);
 });
 
-exports.confirmPayment = functions.https.onRequest((req, resp) => {
+exports.reRouteUser = functions.https.onRequest((req, resp) => {
   if(req.query.uid !== undefined ||
     req.query.trxid !== undefined){
       try {
@@ -57,6 +47,9 @@ exports.confirmPayment = functions.https.onRequest((req, resp) => {
         return;
       }
   }
+});
+
+exports.confirmPayment = functions.https.onRequest((req, resp) => {
   console.log('In updating section...');
   console.log(req.body);
   const config = services.getConfig();
@@ -194,6 +187,7 @@ function setMessage(method, transactionUID, userType) {
             body: 'Tap to find out more',
           },
           data: {
+            pop: 'true',
             targetScreen: 'requests',
             transactionUID: transactionUID,
             timestamp: date.toISOString()
@@ -208,7 +202,6 @@ function setMessage(method, transactionUID, userType) {
               body: 'Tap to find out more',
             },
             data: {
-              pop: 'true',
               targetScreen: 'requests',
               transactionUID: transactionUID,
               timestamp: date.toISOString()

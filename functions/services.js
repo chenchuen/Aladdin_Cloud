@@ -6,9 +6,9 @@ exports.getConfig = function() {
     ServiceID: 'sit',
     MerchantPassword: 'sit12345',
     MerchantName: 'E-Reno',
-    MerchantReturnURL: 'https://us-central1-aladdinapp-942fe.cloudfunctions.net/confirmPayment?uid={uid};trxid={trxid}',
+    MerchantReturnURL: 'https://us-central1-aladdinapp-942fe.cloudfunctions.net/confirmPayment',
     MerchantApprovalURL: 'https://us-central1-aladdinapp-942fe.cloudfunctions.net/confirmPayment',
-    MerchantCallBackURL: 'https://us-central1-aladdinapp-942fe.cloudfunctions.net/confirmPayment', //display or change status
+    MerchantCallBackURL: 'https://us-central1-aladdinapp-942fe.cloudfunctions.net/reRouteUser?uid={uid};trxid={trxid}', //display or change status
     MerchantUnApprovalURL: 'https://us-central1-aladdinapp-942fe.cloudfunctions.net/confirmPayment',
     PageTimeout: 500,
     Methods: {
